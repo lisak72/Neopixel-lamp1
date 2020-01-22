@@ -1,0 +1,6 @@
+{
+  "arch": "esp32",
+  "platform": "esp32",
+  "app_name": "demoC_Neopixel",
+  "build_time_ms": 9148
+}
