@@ -1,11 +1,7 @@
 #include "mgos.h"
 #include "mgos_mqtt.h"
-//#include "ssd1306.h"
-//#include "fonts.h"
-//#include "mgos_i2c.h"
 #include "mgos_init.h"
 #include "mgos_sys_config.h"
-//#include "mgos_i2c_service.h"
 #include "mgos_neopixel.h"
 #include "mgos_rpc.h"
 
@@ -188,54 +184,20 @@ uint8_t k=255,b=0,j=0;
 
 //INIT FUNCT HERE
 enum mgos_app_init_result mgos_app_init(void) {
- // char buf[8];
   mystrip= mgos_neopixel_create(neopixel_pin, neopixel_led, MGOS_NEOPIXEL_ORDER_GRB);
   sysconfigget();
   neopixelRun();
-
-  /* Simple repeating timer */
- // mgos_set_timer(1000, MGOS_TIMER_REPEAT, myDisplayRefreshBig, NULL);
 
 //rpc set handler
 mg_rpc_add_handler(mgos_rpc_get_global(), "Setcol", "{red: %u, green: %u, blue: %u}", setcol_cb, NULL);
 
 //rpcclear handler
-//rpc set handler
 mg_rpc_add_handler(mgos_rpc_get_global(), "Rpcclear", "", rpcclear_cb, NULL);
 
   //NEOPIXEL
    mgos_set_timer(1000, MGOS_TIMER_REPEAT, neopixelRun, NULL);
 
-  /* Publish to MQTT on button press */
-  /*
-  int btn_pin = mgos_sys_config_get_board_btn1_pin();
-  if (btn_pin >= 0) {
-    enum mgos_gpio_pull_type btn_pull;
-    enum mgos_gpio_int_mode btn_int_edge;
-    if (mgos_sys_config_get_board_btn1_pull_up()) {
-      btn_pull = MGOS_GPIO_PULL_UP;
-      btn_int_edge = MGOS_GPIO_INT_EDGE_NEG;
-    } else {
-      btn_pull = MGOS_GPIO_PULL_DOWN;
-      btn_int_edge = MGOS_GPIO_INT_EDGE_POS;
-    }
-    LOG(LL_INFO, ("Button pin %s, active %s", mgos_gpio_str(btn_pin, buf),
-                  (mgos_sys_config_get_board_btn1_pull_up() ? "low" : "high")));
-    mgos_gpio_set_button_handler(btn_pin, btn_pull, btn_int_edge, 20, button_cb,
-                                 NULL);
-  }
- */
 
-/*
-  bool reinitval=myDisplayInit();
-  reInitLog(reinitval);
-*/
-  
-
-  //myI2cInit();
-  //myDisplayInit();
-  
-  // mgos_rpc_service_i2c_init();
 
   /* Network connectivity events */
   mgos_event_add_group_handler(MGOS_EVENT_GRP_NET, net_cb, NULL);
